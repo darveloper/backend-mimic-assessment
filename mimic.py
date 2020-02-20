@@ -50,6 +50,18 @@ __author__ = "???"
 
 
 def create_mimic_dict(filename):
+    mimic_dict = {}
+    prev = ''
+    with open(filename) as file:
+        words = file.read().split()
+    for word in words:
+        if prev not in mimic_dict:
+            mimic_dict[prev] = [word]
+        else:
+            mimic_dict[prev].append(word)
+        prev = word
+
+    return mimic_dict
     """Returns mimic dict mapping each word to list of words which follow it.
     For example:
         Input: "I am a software developer, and I don't care who knows"
@@ -78,13 +90,17 @@ def print_mimic(mimic_dict, start_word):
         - Repeat this process 200 times
     """
     # +++your code here+++
-    pass
-
+    for i in range(200):
+        print(start_word)
+        next_list = mimic_dict.get(start_word)          
+        if not next_list:
+            next_list = mimic_dict['']  
+        start_word = random.choice(next_list)
 
 # Provided main(), calls mimic_dict() and mimic()
 def main():
     if len(sys.argv) != 2:
-        print 'usage: python mimic.py file-to-read'
+        print('usage: python mimic.py file-to-read')
         sys.exit(1)
 
     d = create_mimic_dict(sys.argv[1])
